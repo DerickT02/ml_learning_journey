@@ -1,37 +1,29 @@
-import kagglehub
 import csv
-import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 
 x = []
 y = []
 
+# Read the data
 with open('Car_Price_Prediction.csv') as csvfile:
     reader = csv.DictReader(csvfile)
     for row in reader:
-        x.append(row['Engine Size'])
-        y.append(row['Mileage'])
-print(x)
-print(y)
+        try:
+            year = int(row['Year'])
+            price = float(row['Price'])
+            if 2001 <= year <= 2021:  # Filter years between 2001–2021
+                x.append(year)
+                y.append(price)
+        except:
+            continue  # Skip rows with bad data
 
-plt.scatter(x, y, s=1)
-plt.xlabel("engine size")
+# Create the plot
+plt.figure(figsize=(10, 6))
+plt.scatter(x, y, s=5, alpha=0.3)  # Scatter plot with small dots and transparency
+plt.xlabel("Year")
+plt.ylabel("Price")
+plt.title("Relationship Between Car Year and Price")
+plt.xticks(np.arange(2001, 2022, 2))  # Ticks every 2 years
 
-x = np.linspace(0, 10000, 10000)
-y = np.sin(x / 500)
-
-plt.plot(x, y)
-
-# Set ticks every 1000 units on x-axis
-plt.xticks(np.arange(0, 10001, 1000))
-
-# Set ticks every 0.5 units on y-axis
-plt.yticks(np.arange(-1, 1.1, 0.5))
-
-plt.ylabel("mileage")
-plt.title("Relationship between engine size and mileage")
 plt.show()
-
-    
-
